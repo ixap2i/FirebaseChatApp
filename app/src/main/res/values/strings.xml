@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">FirebaseChatApp</string>
+    <string name="signin">サインイン</string>
+    <string name="signout">サインアウト</string>
+    <string name="id">ID</string>
+    <string name="email">Email</string>
+    <string name="signup">登録</string>
+    <string name="user_status">%s さま</string>
 </resources>
