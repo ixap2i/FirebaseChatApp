@@ -88,9 +88,7 @@ class SignInActivity : AppCompatActivity()  {
                     val intent = Intent(this, ChatActivity::class.java)
 
                     runBlocking {
-
                         signIn(email, password, intent)
-
                     }
 
                 }
