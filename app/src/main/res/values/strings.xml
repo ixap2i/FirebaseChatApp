@@ -6,4 +6,7 @@
     <string name="email">Email</string>
     <string name="signup">登録</string>
     <string name="user_status">%s さま</string>
+    <string name="title_activity_chat">ChatActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>
