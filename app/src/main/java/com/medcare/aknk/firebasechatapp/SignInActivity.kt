@@ -46,7 +46,6 @@ class SignInActivity : AppCompatActivity()  {
 
         fun signIn(email: String, password: String, intent: Intent) {
 
-
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                     task ->
                 if(task.isSuccessful) {
@@ -56,6 +55,7 @@ class SignInActivity : AppCompatActivity()  {
                     updateUI(user)
 
                     GlobalScope.launch {
+                        intent.putExtra("uid", auth.uid)
                         intent.putExtra("email", email)
                         intent.putExtra("password", password)
                         startActivity(intent)
