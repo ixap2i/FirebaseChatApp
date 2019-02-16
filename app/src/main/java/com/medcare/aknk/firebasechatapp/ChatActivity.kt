@@ -12,7 +12,6 @@ import androidx.room.Database
 import com.google.firebase.database.*
 import com.medcare.aknk.firebasechatapp.model.ChatMessage
 import com.medcare.aknk.firebasechatapp.model.ChatMessageManager
-
 import kotlinx.android.synthetic.main.activity_chat_base.*
 import org.json.JSONObject
 
