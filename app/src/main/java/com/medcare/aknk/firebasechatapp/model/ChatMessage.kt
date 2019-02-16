@@ -7,6 +7,8 @@ import androidx.room.Relation
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import java.util.logging.Handler
+import java.util.logging.LogRecord
 
 data class ChatMessage(
     var chatMessage: String,
@@ -26,12 +28,12 @@ class ChatMessageManager {
 
     val postListener = object : ValueEventListener {
         override fun onDataChange(dbSnapShot: DataSnapshot?) {
-//            val postData = dbSnapShot?.getValue(ChatMessage::class.java)
-                Log.d("", "write was success")
-
-    //            postData.let {
-//                Log.d("", "write was success")
-//                // TODO update ui
+            val postData = dbSnapShot?.getValue(ChatMessage::class.java)
+            Log.d("", "write was success")
+//           TODO make main thread's handler and updateUI
+//            val handler = Handler
+//            handler {
+//                updateUI(postData)
 //            }
         }
 
