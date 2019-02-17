@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.BinderThread
 import androidx.constraintlayout.widget.Constraints.TAG
+import androidx.databinding.DataBindingUtil
 import androidx.room.Database
 import com.google.firebase.database.*
 import com.medcare.aknk.firebasechatapp.model.ChatMessage
