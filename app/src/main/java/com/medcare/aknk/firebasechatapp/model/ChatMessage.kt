@@ -7,8 +7,6 @@ import androidx.room.Relation
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import java.util.logging.Handler
-import java.util.logging.LogRecord
 
 data class ChatMessage(
     var chatMessage: String,
