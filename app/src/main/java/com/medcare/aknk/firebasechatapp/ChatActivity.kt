@@ -35,7 +35,7 @@ class ChatActivity : Activity() {
     private lateinit var recyclerView: RecyclerView
 
     private var messageList: ArrayList<ChatMessage> = arrayListOf()
-    private var adapter = ChatViewAdapter(messageList)
+    lateinit var adapter: ChatViewAdapter
 
     fun sendChatMessage(db: DatabaseReference, userId: String, email: String, message: String, imageUrl: String, createdAt: String) {
 
@@ -66,8 +66,7 @@ class ChatActivity : Activity() {
 
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        recyclerView.adapter = adapter
-
+        recyclerView.adapter = ChatViewAdapter(messageList)
 
 
         uid = intent.getStringExtra("uid")

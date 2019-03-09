@@ -18,7 +18,7 @@ class ChatViewAdapter(
     RecyclerView.Adapter<ChatViewAdapter.ChatViewHolder>() {
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
         holder.apply {
-            bind(messageList)
+            bind(messageList, position)
         }
     }
 
@@ -49,9 +49,9 @@ class ChatViewAdapter(
 
     class ChatViewHolder(private val binding: ChatTextCardBinding):
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(messages: ArrayList<ChatMessage>) {
+        fun bind(messages: ArrayList<ChatMessage>, position: Int) {
             binding.apply {
-                binding.chatTextCard.text = messages[0].chatMessage
+                binding.chatTextCard.text = messages[position].chatMessage
 //                executePendingBindings()
             }
         }
