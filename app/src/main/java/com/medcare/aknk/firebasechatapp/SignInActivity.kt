@@ -21,7 +21,7 @@ class SignInActivity : AppCompatActivity()  {
         val builder: FirebaseOptions.Builder = FirebaseOptions.Builder()
         builder
             .setApplicationId("fir-chatapp-b5c26")
-            .setApiKey("AIzaSyCb963RsrC7atucAtC_0Ng7sLRPKwm7GL4")
+            .setApiKey("")
 
 
         val userEmail = findViewById<EditText>(R.id.fieldEmail)

@@ -1,15 +1,12 @@
 package com.medcare.aknk.firebasechatapp.model
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.medcare.aknk.firebasechatapp.R
 import com.medcare.aknk.firebasechatapp.databinding.ChatTextCardBinding
-import kotlinx.android.synthetic.main.chat_text_card.view.*
 
 
 class ChatViewAdapter(
@@ -32,27 +29,11 @@ class ChatViewAdapter(
         return messageList.size
     }
 
-    //    ListAdapter<ChatMessage, ChatViewAdapter.ChatViewHolder>(ChatMessageDiffUtil()) {
-//    override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
-//        val messages = getItem(position)
-//        holder.apply {
-//            bind(messages)
-//        }
-//    }
-
-//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
-//        return ChatViewAdapter.ChatViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context),
-//            R.layout.chat_text_card,
-//            parent, false))
-//
-//    }
-
     class ChatViewHolder(private val binding: ChatTextCardBinding):
         RecyclerView.ViewHolder(binding.root) {
         fun bind(messages: ArrayList<ChatMessage>, position: Int) {
             binding.apply {
                 binding.chatTextCard.text = messages[position].chatMessage
-//                executePendingBindings()
             }
         }
     }
@@ -61,8 +42,8 @@ class ChatViewAdapter(
 
 private class  ChatMessageDiffUtil: DiffUtil.ItemCallback<ChatMessage>() {
     override fun areContentsTheSame(oldItem: ChatMessage, newItem: ChatMessage): Boolean {
-//        val equals = oldItem.createdAt == newItem.createdAt
-        return true
+        val equals = oldItem.id == newItem.id
+        return equals
    }
 
     override fun areItemsTheSame(oldItem: ChatMessage, newItem: ChatMessage): Boolean {
