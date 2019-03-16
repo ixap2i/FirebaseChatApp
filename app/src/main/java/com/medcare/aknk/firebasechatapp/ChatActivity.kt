@@ -5,6 +5,7 @@ import android.app.Activity
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Constraints
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -40,6 +41,11 @@ class ChatActivity : Activity() {
 
     lateinit var chatMessage: ChatMessage
 
+    val CONST_PREFERENCE_KEY_UID: String = "USER_UID"
+    val CONST_PREFERENCE_KEY_PASS: String = "USER_PASSWRD"
+    val CONST_PREFERENCE_KEY_USR_INFO: String = "USER_INFO"
+
+
     fun sendChatMessage(id: Integer, db: DatabaseReference, userId: String, email: String, message: String, imageUrl: String, createdAt: String) {
 
         db.child("chat_message").child(userId)
@@ -59,22 +65,20 @@ class ChatActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_base)
 
+        val preference = getSharedPreferences(CONST_PREFERENCE_KEY_UID, AppCompatActivity.MODE_PRIVATE)
+
+        preference?.let {
+            val uid = preference.getString(CONST_PREFERENCE_KEY_UID, null)
+            val pass = preference.getString(CONST_PREFERENCE_KEY_PASS, null)
+            val info = preference.getStringSet(CONST_PREFERENCE_KEY_USR_INFO, null)
+            Log.d("", "uid: $uid, pass: $pass")
+            Log.d("", "usr info: $info")
+        }
+
         val postListener = object : ValueEventListener {
             override fun onDataChange(dbSnapShot: DataSnapshot?) {
                 val postData = (dbSnapShot?.getValue(true) as HashMap<String, Object>).toMap()
                 val s = (postData.getValue("chat_message") as HashMap<String, Object>).toMap()
-//                val ss = s.getValue("hvmHPoWkMWatqUo7GXyIHRZScfX2")
-//                val sample = (ss as Map<Int, Object>).toMap()
-//                lateinit var list: MutableList<Map<Int, Object>>
-///
-//                list.add(sample)
-//                sample?.let {
-//                    it.forEach {
-//                        list.add
-////                        Log.d("", "it Value is ${it.second}")
-//
-//                    }
-//                }
             }
 
             override fun onCancelled(dbErr: DatabaseError?) {
@@ -119,6 +123,8 @@ class ChatActivity : Activity() {
         password = intent.getStringExtra("password")
 
         dbRef = FirebaseDatabase.getInstance().getReference("message")
+        dbRef.child("chat_message").database
+
         dbRef.addValueEventListener(postListener)
         dbRef.addChildEventListener(childListener)
 
