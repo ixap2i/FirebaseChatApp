@@ -6,18 +6,6 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.Constraints
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.database.*
-import com.medcare.aknk.firebasechatapp.model.ChatMessage
-import com.medcare.aknk.firebasechatapp.model.ChatViewAdapter
-import org.w3c.dom.Node
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
-
 
 class ChatActivity : Activity() {
 
