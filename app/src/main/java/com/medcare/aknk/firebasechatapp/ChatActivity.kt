@@ -6,6 +6,19 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.Constraints
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.FirebaseApp
+import com.google.firebase.database.*
+import com.google.firebase.storage.StorageReference
+import com.medcare.aknk.firebasechatapp.model.ChatMessage
+import com.medcare.aknk.firebasechatapp.model.ChatViewAdapter
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.HashMap
 
 class ChatActivity : Activity() {
 
@@ -29,10 +42,21 @@ class ChatActivity : Activity() {
 
     lateinit var chatMessage: ChatMessage
 
+    private val chatMessageConstainer = MutableLiveData<Map.Entry<String, ChatMessage>>()
+
     val CONST_PREFERENCE_KEY_UID: String = "USER_UID"
     val CONST_PREFERENCE_KEY_PASS: String = "USER_PASSWRD"
     val CONST_PREFERENCE_KEY_USR_INFO: String = "USER_INFO"
 
+    fun getChatMessages(userId: String, db: DatabaseReference) {
+//
+//
+//        chatMessages.forEach { msg ->
+//            chatMessageConstainer.postValue(msg)
+//        }
+
+
+    }
 
     fun sendChatMessage(id: Integer, db: DatabaseReference, userId: String, email: String, message: String, imageUrl: String, createdAt: String) {
 
@@ -65,8 +89,19 @@ class ChatActivity : Activity() {
 
         val postListener = object : ValueEventListener {
             override fun onDataChange(dbSnapShot: DataSnapshot?) {
-                val postData = (dbSnapShot?.getValue(true) as HashMap<String, Object>).toMap()
-                val s = (postData.getValue("chat_message") as HashMap<String, Object>).toMap()
+                val t = dbSnapShot?.child("chat_message")?.child(uid)?.getValue(true)
+
+                val tMap = t as HashMap<String, ChatMessage>
+
+                tMap.forEach {
+                    chatMessageConstainer.postValue(it)
+                }
+
+                Transformations.map(chatMessageConstainer) {
+                    println("live data"  + it)
+                }
+
+
             }
 
             override fun onCancelled(dbErr: DatabaseError?) {
@@ -115,6 +150,8 @@ class ChatActivity : Activity() {
 
         dbRef.addValueEventListener(postListener)
         dbRef.addChildEventListener(childListener)
+
+//        getChatMessages(uid, dbRef)
 
         chatMessageSendBtn.setOnClickListener {
             message = chatMessageInput.text.toString()
