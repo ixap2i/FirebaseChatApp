@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Constraints
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,21 +43,13 @@ class ChatActivity : Activity() {
 
     lateinit var chatMessage: ChatMessage
 
-    private val chatMessageConstainer = MutableLiveData<Map.Entry<String, ChatMessage>>()
+    private val chatMessageConstainer = MutableLiveData<Pair<String, ChatMessage>>()
 
     val CONST_PREFERENCE_KEY_UID: String = "USER_UID"
     val CONST_PREFERENCE_KEY_PASS: String = "USER_PASSWRD"
     val CONST_PREFERENCE_KEY_USR_INFO: String = "USER_INFO"
 
-    fun getChatMessages(userId: String, db: DatabaseReference) {
-//
-//
-//        chatMessages.forEach { msg ->
-//            chatMessageConstainer.postValue(msg)
-//        }
 
-
-    }
 
     fun sendChatMessage(id: Integer, db: DatabaseReference, userId: String, email: String, message: String, imageUrl: String, createdAt: String) {
 
@@ -89,19 +82,14 @@ class ChatActivity : Activity() {
 
         val postListener = object : ValueEventListener {
             override fun onDataChange(dbSnapShot: DataSnapshot?) {
-                val t = dbSnapShot?.child("chat_message")?.child(uid)?.getValue(true)
+                val chatObject: HashMap<String, Object> = dbSnapShot?.child("chat_message")?.child(uid)?.getValue(true) as HashMap<String, Object>
 
-                val tMap = t as HashMap<String, ChatMessage>
-
-                tMap.forEach {
-                    chatMessageConstainer.postValue(it)
+                var i = 1
+                while(i < chatObject.size)  {
+                    var message: HashMap<String, ChatMessage> = chatObject.get("$i")
+//                    ChatViewAdapter(message as List<String>)
+                    i++
                 }
-
-                Transformations.map(chatMessageConstainer) {
-                    println("live data"  + it)
-                }
-
-
             }
 
             override fun onCancelled(dbErr: DatabaseError?) {
@@ -160,7 +148,7 @@ class ChatActivity : Activity() {
             val date = dateFormat.format(created_at)
 
 
-            chatMessage = ChatMessage(Integer(messageList.size),
+            chatMessage = ChatMessage(messageList.size,
                 uid,
                 message,
                 email,

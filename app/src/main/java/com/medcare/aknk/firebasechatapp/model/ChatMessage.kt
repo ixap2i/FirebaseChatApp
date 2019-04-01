@@ -1,34 +1,20 @@
 package com.medcare.aknk.firebasechatapp.model
 
-import android.util.Log
-import androidx.constraintlayout.widget.Constraints
-import androidx.room.Relation
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
+import androidx.room.*
+import javax.annotation.Nullable
 
-
+@Entity
+@Nullable
 data class ChatMessage(
-    val id: Integer?,
-    val userName: String,
-    var chatMessage: String,
-    val email: String,
-    val ImageUrl: String?,
-    val createdAt: String
-) {
+    @PrimaryKey
+    private val id: Int = 0,
+    private val message: String,
+    private val email: String,
+    private val created_at: String
+)
 
-    @Relation(parentColumn = "id", entityColumn = "message_id")
-    var messages: List<ChatMessage> = listOf()
-
-    val postListener = object : ValueEventListener {
-        override fun onDataChange(dbSnapShot: DataSnapshot?) {
-            val postData = dbSnapShot?.getValue(ChatMessage::class.java)
-            Log.d("", "Value is $postData")
-        }
-
-        override fun onCancelled(dbErr: DatabaseError?) {
-            Log.w(Constraints.TAG, "load post canceled", dbErr?.toException())
-        }
-    }
+@Dao
+interface ChatMsgDao {
+    @Query("select * from chatmessage")
+    fun getAll(): List<ChatMessage>
 }
-
