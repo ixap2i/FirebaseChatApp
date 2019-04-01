@@ -19,7 +19,7 @@ class CreateUserActivity : AppCompatActivity() {
         val builder: FirebaseOptions.Builder = FirebaseOptions.Builder()
         builder
             .setApplicationId("fir-chatapp-b5c26")
-            .setApiKey("AIzaSyCb963RsrC7atucAtC_0Ng7sLRPKwm7GL4")
+            .setApiKey("")
 
 
         val userEmail = findViewById<EditText>(R.id.fieldEmail)
@@ -36,7 +36,6 @@ class CreateUserActivity : AppCompatActivity() {
                     it
                 }}") }
                 it.addOnFailureListener { Log.w("", "Create user was failed as follow reason: ${Thread.dumpStack()}") }
-//                it.addOnCompleteListener {  }
             })
         val signUpBtn = findViewById(R.id.button_singin) as Button
 

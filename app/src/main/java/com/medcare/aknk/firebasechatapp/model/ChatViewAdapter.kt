@@ -1,60 +1,53 @@
-//package com.medcare.aknk.firebasechatapp.model
-//
-//import android.view.LayoutInflater
-//import android.view.View
-//import android.view.ViewGroup
-//import android.widget.ListAdapter
-//import android.widget.TextView
-//import androidx.recyclerview.widget.DiffUtil
-//import androidx.recyclerview.widget.RecyclerView
-//
-//
-//class ChatViewAdapter(private val chatDataSet: Array<String>):
-//    ListAdapter<ChatViewAdapter.ChatViewHolder>(ChatMessageDiffCallBack()) {
-//
-//
-//    override fun onBindViewHolder(chatViewHolder: ChatViewHolder, position: Int) {
-//        getItem(position)
-//    }
-//
-//    private fun createOnClickListener(messageId: String): View.OnClickListener {
-//        return View.OnClickListener {
-////            val direction =
-//        }
-//    }
-//
-//    override fun getItemCount(): Int {
-//        return chatDataSet.size
-//    }
-//
-//    override fun onCreateViewHolder(chatParentViewGroup: ViewGroup, viewType: Int): ChatViewHolder {
-//        val chatTextView = LayoutInflater.from(chatParentViewGroup.context).inflate(com.medcare.aknk.firebasechatapp.R.layout.chat_text_card, chatParentViewGroup, false) as TextView
-//        return ChatViewHolder(chatTextView)
-//    }
-//
-//
-//    class ChatViewHolder(private val binding: TextView)
-//    : RecyclerView.ViewHolder(binding.root) {
-//        fun bind(listener: View.OnClickListener, messages: ChatMessage) {
-//            with(binding) {
-//                clickListener = listener
-//                viewModel = ChatMessage(
-//                itemView.context,
-//                messages
-//                )
-//                executePendingBindongs()
-//            }
-//        }
-//    }
-//}
-//
-//private class ChatMessageDiffCallBack: DiffUtil.ItemCallback<ChatMessage>() {
-//    override fun areContentsTheSame(oldItem: ChatMessage, newItem: ChatMessage): Boolean {
-////        return oldItem.message.messageId == newItem.message.messageId
-//    }
-//
-//    override fun areItemsTheSame(oldItem: ChatMessage, newItem: ChatMessage): Boolean {
-//        return oldItem.message == newItem.message
-//    }
-//
-//}
+package com.medcare.aknk.firebasechatapp.model
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
+import com.medcare.aknk.firebasechatapp.R
+import com.medcare.aknk.firebasechatapp.databinding.ChatTextCardBinding
+
+
+class ChatViewAdapter(
+        val messageList: ArrayList<ChatMessage>
+    ):
+    RecyclerView.Adapter<ChatViewAdapter.ChatViewHolder>() {
+    override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
+        holder.apply {
+            bind(messageList, position)
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
+        return ChatViewAdapter.ChatViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context),
+            R.layout.chat_text_card,
+            parent, false))
+    }
+
+    override fun getItemCount(): Int {
+        return messageList.size
+    }
+
+    class ChatViewHolder(private val binding: ChatTextCardBinding):
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(messages: ArrayList<ChatMessage>, position: Int) {
+            binding.apply {
+                binding.chatTextCard.text = messages[position].chatMessage
+            }
+        }
+    }
+
+}
+
+private class  ChatMessageDiffUtil: DiffUtil.ItemCallback<ChatMessage>() {
+    override fun areContentsTheSame(oldItem: ChatMessage, newItem: ChatMessage): Boolean {
+        val equals = oldItem.id == newItem.id
+        return equals
+   }
+
+    override fun areItemsTheSame(oldItem: ChatMessage, newItem: ChatMessage): Boolean {
+        return oldItem == newItem
+    }
+
+}
