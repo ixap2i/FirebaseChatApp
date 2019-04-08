@@ -125,10 +125,10 @@ class SignInActivity : AppCompatActivity()  {
         val preference = getSharedPreferences(CONST_PREFERENCE_KEY_USR_INFO, AppCompatActivity.MODE_PRIVATE)
 
         preference.let {
-            email = preference.getString("USER_UID", null)
-            password = preference.getString("USER_PASSWRD", null)
+            email = preference.getString("USER_UID", "Email is null")
+            password = preference.getString("USER_PASSWRD", "Password is null")
 
-            signIn(email, password, intent)
+            if(!email.isNullOrEmpty() && !password.isNullOrEmpty()) { signIn(email, password, intent) }
         }
 
 
