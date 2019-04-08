@@ -33,7 +33,7 @@ class ChatViewAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(messages: ArrayList<ChatMessage>, position: Int) {
             binding.apply {
-                binding.chatTextCard.text = messages[position].message
+                binding.chatTextCard.text = messages[position].chatMessage
             }
         }
     }

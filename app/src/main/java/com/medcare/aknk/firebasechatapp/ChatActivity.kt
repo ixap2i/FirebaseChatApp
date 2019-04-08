@@ -45,6 +45,9 @@ class ChatActivity : Activity() {
 
     private val chatMessageConstainer = MutableLiveData<Map.Entry<String, ChatMessage>>()
 
+    private var CONST_PREFERENCE_KEY_UID = ""
+    private var CONST_PREFERENCE_KEY_PASS = ""
+    private var CONST_PREFERENCE_KEY_USR_INFO = ""
 
     fun getChatMessages(userId: String, db: DatabaseReference) {
 //
@@ -91,7 +94,7 @@ class ChatActivity : Activity() {
 
                 var i = 1
                 while(i < chatObject.size)  {
-                    var message: HashMap<String, ChatMessage> = chatObject.get("$i")
+                    var message = chatObject.get("$i")
 //                    ChatViewAdapter(message as List<String>)
                     i++
                 }

@@ -1,12 +1,17 @@
 package com.medcare.aknk.firebasechatapp.model
 
+import android.util.Log
+import androidx.constraintlayout.widget.Constraints
 import androidx.room.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import javax.annotation.Nullable
 
 @Entity
 @Nullable
 data class ChatMessage(
-    val id: Integer?,
+    val id: Int?,
     val userName: String,
     var chatMessage: String,
     val email: String,
