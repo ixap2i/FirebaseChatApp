@@ -44,7 +44,7 @@ private class  ChatMessageDiffUtil: DiffUtil.ItemCallback<ChatMessage>() {
     override fun areContentsTheSame(oldItem: ChatMessage, newItem: ChatMessage): Boolean {
         val equals = oldItem.id == newItem.id
         return equals
-   }
+    }
 
     override fun areItemsTheSame(oldItem: ChatMessage, newItem: ChatMessage): Boolean {
         return oldItem == newItem

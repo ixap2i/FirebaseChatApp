@@ -6,15 +6,26 @@ import javax.annotation.Nullable
 @Entity
 @Nullable
 data class ChatMessage(
-    @PrimaryKey
-    private val id: Int = 0,
-    private val message: String,
-    private val email: String,
-    private val created_at: String
-)
+    val id: Integer?,
+    val userName: String,
+    var chatMessage: String,
+    val email: String,
+    val ImageUrl: String?,
+    val createdAt: String
+) {
 
-@Dao
-interface ChatMsgDao {
-    @Query("select * from chatmessage")
-    fun getAll(): List<ChatMessage>
+    @Relation(parentColumn = "id", entityColumn = "message_id")
+    var messages: List<ChatMessage> = listOf()
+
+    val postListener = object : ValueEventListener {
+        override fun onDataChange(dbSnapShot: DataSnapshot?) {
+            val postData = dbSnapShot?.getValue(ChatMessage::class.java)
+            Log.d("", "Value is $postData")
+        }
+
+        override fun onCancelled(dbErr: DatabaseError?) {
+            Log.w(Constraints.TAG, "load post canceled", dbErr?.toException())
+        }
+    }
 }
+

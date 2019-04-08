@@ -7,7 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Constraints
-import androidx.lifecycle.LiveData
+
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,13 +43,18 @@ class ChatActivity : Activity() {
 
     lateinit var chatMessage: ChatMessage
 
-    private val chatMessageConstainer = MutableLiveData<Pair<String, ChatMessage>>()
-
-    val CONST_PREFERENCE_KEY_UID: String = "USER_UID"
-    val CONST_PREFERENCE_KEY_PASS: String = "USER_PASSWRD"
-    val CONST_PREFERENCE_KEY_USR_INFO: String = "USER_INFO"
+    private val chatMessageConstainer = MutableLiveData<Map.Entry<String, ChatMessage>>()
 
 
+    fun getChatMessages(userId: String, db: DatabaseReference) {
+//
+//
+//        chatMessages.forEach { msg ->
+//            chatMessageConstainer.postValue(msg)
+//        }
+
+
+    }
 
     fun sendChatMessage(id: Integer, db: DatabaseReference, userId: String, email: String, message: String, imageUrl: String, createdAt: String) {
 
@@ -90,6 +95,19 @@ class ChatActivity : Activity() {
 //                    ChatViewAdapter(message as List<String>)
                     i++
                 }
+                val t = dbSnapShot?.child("chat_message")?.child(uid)?.getValue(true)
+
+                val tMap = t as HashMap<String, ChatMessage>
+
+                tMap.forEach {
+                    chatMessageConstainer.postValue(it)
+                }
+
+                Transformations.map(chatMessageConstainer) {
+                    println("live data"  + it)
+                }
+
+
             }
 
             override fun onCancelled(dbErr: DatabaseError?) {
