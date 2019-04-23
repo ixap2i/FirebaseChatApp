@@ -6,6 +6,7 @@ import androidx.room.*
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 import javax.annotation.Nullable
 
 @Entity
@@ -31,6 +32,12 @@ data class ChatMessage(
         override fun onCancelled(dbErr: DatabaseError?) {
             Log.w(Constraints.TAG, "load post canceled", dbErr?.toException())
         }
+    }
+
+    companion object {
+        val storage = FirebaseStorage.getInstance()
+        val storageRef = storage.reference
+        val picRef = storageRef.child("/storage/emulated/0/DCIM/Camera")
     }
 }
 

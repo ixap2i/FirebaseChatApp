@@ -2,9 +2,13 @@ package com.medcare.aknk.firebasechatapp
 
 import android.os.Bundle
 import android.app.Activity
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Constraints
 
@@ -12,11 +16,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.*
 import com.google.firebase.storage.StorageReference
 import com.medcare.aknk.firebasechatapp.model.ChatMessage
 import com.medcare.aknk.firebasechatapp.model.ChatViewAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
@@ -37,6 +46,7 @@ class ChatActivity : Activity() {
 
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
+    private lateinit var snackBarPoint: LinearLayout
 
     private var messageList: ArrayList<ChatMessage> = arrayListOf()
     lateinit var adapter: ChatViewAdapter
@@ -66,7 +76,7 @@ class ChatActivity : Activity() {
             mapOf(Pair("id", id),
                 Pair("message", message),
                 Pair("email", email),
-                Pair("image_url",image_url),
+                Pair("image_url", image_url),
                 Pair("created_at", createdAt)
             )
         ).addOnCompleteListener {
@@ -74,11 +84,35 @@ class ChatActivity : Activity() {
         }
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_base)
 
         val preference = getSharedPreferences(CONST_PREFERENCE_KEY_UID, AppCompatActivity.MODE_PRIVATE)
+        val imageView = findViewById(R.id.example_view) as ImageView
+        snackBarPoint = findViewById(R.id.example_snack_bar)
+
+        val bitmap = (imageView.drawable as BitmapDrawable).bitmap
+        val baos = ByteArrayOutputStream()
+
+        runBlocking {
+            launch(Dispatchers.Default) {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                val data = baos.toByteArray()
+
+                var uploadTask = ChatMessage.picRef.putBytes(data)
+                uploadTask.addOnFailureListener {
+                    Log.d("", "${it.message}")
+                    val snackbar = Snackbar.make(snackBarPoint, " 画像アップロードに失敗しました", Snackbar.LENGTH_INDEFINITE)
+                    snackbar.show()
+                }.addOnSuccessListener {
+                    // success
+                }
+            }
+        }
+
+
 
         preference?.let {
             val uid = preference.getString(CONST_PREFERENCE_KEY_UID, null)
@@ -99,18 +133,13 @@ class ChatActivity : Activity() {
                     i++
                 }
                 val t = dbSnapShot?.child("chat_message")?.child(uid)?.getValue(true)
-
                 val tMap = t as HashMap<String, ChatMessage>
-
                 tMap.forEach {
                     chatMessageConstainer.postValue(it)
                 }
-
                 Transformations.map(chatMessageConstainer) {
                     println("live data"  + it)
                 }
-
-
             }
 
             override fun onCancelled(dbErr: DatabaseError?) {
@@ -161,6 +190,7 @@ class ChatActivity : Activity() {
         dbRef.addChildEventListener(childListener)
 
 //        getChatMessages(uid, dbRef)
+
 
         chatMessageSendBtn.setOnClickListener {
             message = chatMessageInput.text.toString()
