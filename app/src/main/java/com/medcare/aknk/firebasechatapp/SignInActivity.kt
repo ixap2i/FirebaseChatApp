@@ -44,7 +44,7 @@ class SignInActivity : AppCompatActivity()  {
         var auth: FirebaseAuth = FirebaseAuth.getInstance()
 
         val signUpBtn = findViewById(R.id.button_singin) as Button
-        val snackBarPont = findViewById(R.id.snackBarMessage) as LinearLayout
+        val snackBarPoint = findViewById(R.id.snackBarMessage) as LinearLayout
 
         fun updateUI(user : FirebaseUser?) {
             val isSignedIn = user!= null
@@ -95,22 +95,22 @@ class SignInActivity : AppCompatActivity()  {
                     Log.d("", "Exception occurred: ${task.exception}")
                     try {
                         if((task.exception as FirebaseAuthInvalidCredentialsException).errorCode == "ERROR_WRONG_PASSWORD") {
-                            val snackbar = Snackbar.make(snackBarPont, "パスワードに誤りがあります。", Snackbar.LENGTH_INDEFINITE)
+                            val snackbar = Snackbar.make(snackBarPoint, "パスワードに誤りがあります。", Snackbar.LENGTH_INDEFINITE)
 
                             snackbar.show()
                         } else if((task.exception as FirebaseAuthInvalidCredentialsException).errorCode == "ERROR_INVALID_EMAIL") {
-                            val snackbar = Snackbar.make(snackBarPont, "メールアドレスに誤りがあります。", Snackbar.LENGTH_INDEFINITE)
+                            val snackbar = Snackbar.make(snackBarPoint, "メールアドレスに誤りがあります。", Snackbar.LENGTH_INDEFINITE)
 
                             snackbar.show()
                         } else if((task.exception as FirebaseAuthInvalidUserException).errorCode == "ERROR_USER_NOT_FOUND") {
-                            val snackbar = Snackbar.make(snackBarPont, "ユーザーが見つかりません。管理者に問い合わせいただくか、もう一度新規登録からお試しください。  ", Snackbar.LENGTH_INDEFINITE)
+                            val snackbar = Snackbar.make(snackBarPoint, "ユーザーが見つかりません。管理者に問い合わせいただくか、もう一度新規登録からお試しください。  ", Snackbar.LENGTH_INDEFINITE)
                             snackbar.show()
                         } else if("${task.exception}".contains("com.google.firebase.FirebaseNetworkException")) {
-                            val snackbar = Snackbar.make(snackBarPont, "ネットワークエラーです。接続環境を今一度ご確認ください。", Snackbar.LENGTH_INDEFINITE)
+                            val snackbar = Snackbar.make(snackBarPoint, "ネットワークエラーです。接続環境を今一度ご確認ください。", Snackbar.LENGTH_INDEFINITE)
                             snackbar.show()
                         }
                     } catch(ex: Exception) {
-                        val snackbar = Snackbar.make(snackBarPont, "想定されないエラーです。アプリケーションの管理者にお問い合わせください。", Snackbar.LENGTH_INDEFINITE)
+                        val snackbar = Snackbar.make(snackBarPoint, "想定されないエラーです。アプリケーションの管理者にお問い合わせください。", Snackbar.LENGTH_INDEFINITE)
                         snackbar.show()
                     }
 
