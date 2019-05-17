@@ -1,13 +1,7 @@
 ### FirebaseChatApp
 
-This repository try to publish chat app by using Firebase.
+FirebaseStoreなどを使ってメッセージの送受信をする予定のものを作っています。
+画像のアップロード機能を作成中です。
 
-### Setup
-1. 
- clone this repository under AndroidStudio
 
-2.
- you can check dependencies on build.gradle file, pls check newest version on https://firebase.google.com/docs/android/setup#add_firebase_to_your_app or other documents
-
- 3.
-  now processing ;(
+<font size="5">クラスの切り分けで苦労しています…</font>
